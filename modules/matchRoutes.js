@@ -122,6 +122,12 @@ function matchRouteDeep(
   route, location, remainingPathname, paramNames, paramValues, callback
 ) {
   let pattern = route.path || ''
+  
+  // Ensure the pathname (used for Regex matching) are matching on a decoded URI
+  // This helps with URLs containing international chars (like "détails")
+  if (remainingPathname) {
+    remainingPathname = decodeURIComponent(remainingPathname)
+  }
 
   if (pattern.charAt(0) === '/') {
     remainingPathname = location.pathname
